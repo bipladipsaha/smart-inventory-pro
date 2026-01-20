@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: inventory-backend
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT --workers 2 --timeout 120 --access-logfile - --error-logfile -
+    envVars:
+      - key: MONGODB_URI
+        sync: false
+      - key: MONGODB_DB_NAME
+        value: inventory_db
+      - key: JWT_SECRET_KEY
+        sync: false
+      - key: JWT_EXPIRATION_HOURS
+        value: 24
+      - key: CORS_ORIGINS
+        sync: false
